@@ -35,8 +35,10 @@ export default function UserManagement() {
     const [editShow2, setEditShow2] = useState(false)
     const [editShowValue, setEditShowValue] = useState(false)
     const [roleTitle, setRoleTitle] = useState('');
-    const [techCareRoleFilter, setTechCareRoleFilter] = useState([])
-
+    const [techCareRoleTitle, setTechCareRoleTitle] = useState('');
+    const [addRoleTitle, setAddRoleTitle] = useState('');
+    const [techCareRoleFilter, setTechCareRoleFilter] = useState([...arr])
+    const [roleMapFilter, setRoleMapFilter] = useState([...roles])
 
 
 
@@ -59,8 +61,76 @@ export default function UserManagement() {
             )
             setTechCareRoleFilter([...fltrArr])
         }
-    }, [roleTitle])
+    }, [roleTitle, arr])
 
+    useEffect(() => {
+        if (techCareRoleTitle.length <= 0 && addRoleTitle.length <= 0) {
+            setRoleMapFilter([...roles])
+        } else {
+            var fltrArr = arr.filter((value) => {
+                if (value.AddAdRole.includes(addRoleTitle) || value.TechCareRole.includes(techCareRoleTitle)) {
+                    return value;
+                }
+            }
+
+            )
+            setRoleMapFilter([...fltrArr])
+        }
+    }, [addRoleTitle, techCareRoleTitle, roles])
+
+
+    const mappp = (value) => {
+        return (
+            <TableRow key={value.id}>
+                <TableCell>{value.TechCareRole}</TableCell>
+                <TableCell><Checkbox checked={value.UserManagement} /></TableCell>
+                <TableCell><Checkbox checked={value.ServiceRequest} /></TableCell>
+                <TableCell><Checkbox checked={value.RecentAlarms} /></TableCell>
+                <TableCell><Checkbox checked={value.Cycles} /></TableCell>
+                <TableCell><Checkbox checked={value.Insights} /></TableCell>
+                <TableCell><Checkbox checked={value.DeviceData} /></TableCell>
+                <TableCell><Checkbox checked={value.TroubleShoot} /></TableCell>
+                <TableCell><Checkbox checked={value.Events} /></TableCell>
+                <TableCell>
+                    <ButtonGroup
+                        variant="text"
+                        sx={{
+                            translate: '-12px 0'
+                        }}
+                    >
+                        <Button onClick={() => {
+                            // setEditShow(true)
+                            // editRole(value.id)
+                        }}><EditIcon /></Button>
+                        <Button onClick={() => deleteRole(value.id)}><DeleteIcon /></Button>
+                    </ButtonGroup>
+                </TableCell>
+            </TableRow>
+        )
+    }
+
+    const mappp2 = (value) => {
+        console.log(value);
+        return (
+            <TableRow key={value.id}>
+                <TableCell align='left'>{value.AddAdRole}</TableCell>
+                <TableCell align='left'>{value.TechCareRole}</TableCell>
+
+
+
+
+                <TableCell align='right'>
+                    <ButtonGroup
+                        variant="text"
+
+                    >
+                        <Button><EditIcon /></Button>
+                        <Button onClick={() => deleteAdRole(value.id)}><DeleteIcon /></Button>
+                    </ButtonGroup>
+                </TableCell>
+            </TableRow>
+        )
+    }
 
     return (
         <>
@@ -101,8 +171,8 @@ export default function UserManagement() {
                                 }
 
                                 {
-                                    (tabValue === 2) && <><TextField id="standard-basic" label="Add Roll" variant="standard" sx={{ marginLeft: '15px', translate: '0 -6.5px' }} />
-                                        <TextField id="standard-basic" label="TechCare Roll" variant="standard" sx={{ marginLeft: '15px', translate: '0 -6.5px' }} /></>
+                                    (tabValue === 2) && <><TextField id="standard-basic" label="Add Roll" variant="standard" sx={{ marginLeft: '15px', translate: '0 -6.5px' }} onChange={(e) => setAddRoleTitle(e.target.value)} value={addRoleTitle} />
+                                        <TextField id="standard-basic" label="TechCare Roll" variant="standard" sx={{ marginLeft: '15px', translate: '0 -6.5px' }} onChange={(e) => setTechCareRoleTitle(e.target.value)} value={techCareRoleTitle} /></>
                                 }
 
 
@@ -158,35 +228,7 @@ export default function UserManagement() {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        techCareRoleFilter.map(value => {
-                                            return (
-                                                <TableRow key={value.id}>
-                                                    <TableCell>{value.TechCareRole}</TableCell>
-                                                    <TableCell><Checkbox checked={value.UserManagement} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.ServiceRequest} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.RecentAlarms} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.Cycles} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.Insights} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.DeviceData} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.TroubleShoot} /></TableCell>
-                                                    <TableCell><Checkbox checked={value.Events} /></TableCell>
-                                                    <TableCell>
-                                                        <ButtonGroup
-                                                            variant="text"
-                                                            sx={{
-                                                                translate: '-12px 0'
-                                                            }}
-                                                        >
-                                                            <Button onClick={() => {
-                                                                // setEditShow(true)
-                                                                // editRole(value.id)
-                                                            }}><EditIcon /></Button>
-                                                            <Button onClick={() => deleteRole(value.id)}><DeleteIcon /></Button>
-                                                        </ButtonGroup>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        })
+                                        roleTitle.length > 0 ? techCareRoleFilter.map(itm => mappp(itm)) : arr.map(itm => mappp(itm))
                                     }
                                 </TableBody>
                             </Table>
@@ -212,28 +254,11 @@ export default function UserManagement() {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        roles.map(value => {
-                                            return (
-                                                <TableRow key={value.id}>
-                                                    <TableCell align='left'>{value.AddAdRole}</TableCell>
-                                                    <TableCell align='left'>{value.TechCareRole}</TableCell>
-
-
-
-
-                                                    <TableCell align='right'>
-                                                        <ButtonGroup
-                                                            variant="text"
-
-                                                        >
-                                                            <Button><EditIcon /></Button>
-                                                            <Button onClick={() => deleteAdRole(value.id)}><DeleteIcon /></Button>
-                                                        </ButtonGroup>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        })
+                                        (addRoleTitle.length > 0 || techCareRoleTitle.length > 0) ? roleMapFilter.map(itm => mappp2(itm)) :
+                                            roles.map(itm => mappp2(itm))
+                                        // console.log(roles)
                                     }
+
                                 </TableBody>
                             </Table>
                         }
