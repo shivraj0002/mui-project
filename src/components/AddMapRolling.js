@@ -71,7 +71,11 @@ const AddMapRolling = ({ setEditShow, setEditShow2 }) => {
                     minWidth: '150px',
                 }}
                     // disabled={true}
-                    variant="contained" onClick={() => AddAdRole(role)}>Add</Button>
+                    variant="contained" onClick={() => {
+                        AddAdRole(role);
+                        setEditShow(false);
+                        setEditShow2(false)
+                    }}>Add</Button>
             </Box>
         </Box>
     )

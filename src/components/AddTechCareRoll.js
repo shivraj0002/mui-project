@@ -204,7 +204,11 @@ const AddTechCareRoll = ({ setEditShow, setEditShow2, obj }) => {
                     minWidth: '150px',
                 }}
                     disabled={checkBoxValue.TechCareRole.length < 3 ? true : false}
-                    onClick={() => AddRole(checkBoxValue)}
+                    onClick={() => {
+                        AddRole(checkBoxValue)
+                        setEditShow(false)
+                        setEditShow2(false)
+                    }}
                     variant="contained">Add</Button>
             </Box>
         </Box>
