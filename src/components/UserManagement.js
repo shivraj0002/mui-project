@@ -67,10 +67,13 @@ export default function UserManagement() {
         if (techCareRoleTitle.length <= 0 && addRoleTitle.length <= 0) {
             setRoleMapFilter([...roles])
         } else {
-            var fltrArr = arr.filter((value) => {
+            var fltrArr = roles.filter((value) => {
                 if (addRoleTitle.length > 0 && value.AddAdRole.includes(addRoleTitle) || techCareRoleTitle.length > 0 && value.TechCareRole.includes(techCareRoleTitle)) {
                     return value;
+                } else {
+                    return;
                 }
+
             }
 
             )
